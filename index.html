@@ -119,114 +119,93 @@
     © <span id="year"></span> Isma Chavez — <span data-i18n="rights">Todos los derechos reservados.</span>
   </footer>
 
-  <script>
-    // Detecta idioma según la ruta (/en/)
-    const isEN = location.pathname.split('/').filter(Boolean)[0] === 'en';
-    document.documentElement.lang = isEN ? 'en' : 'es';
+ <script>
+  // 1. DETECTAR IDIOMA (SOLO UNA VEZ)
+  const isEN = location.pathname.includes('/en/');
+  document.documentElement.lang = isEN ? 'en' : 'es';
 
-    // Diccionario de textos
-    const dict = {
-      es: {
-        nav_home: 'Inicio',
-        nav_dates: 'Fechas',
-        nav_poetry: 'Poesía',
-        nav_store: 'Tienda',
-        signup_title: 'Únete a mi lista',
-        btn_continue: 'Continuar',
-        dates_title: 'Fechas',
-        dates_intro: 'Próximas lecturas y firmas de libros. (Agrega tus fechas aquí)',
-        dates_no: 'Por ahora no hay fechas confirmadas.',
-        dates_soon: 'Próximamente',
-        d1: '12 Oct — Miami, FL — Librería XYZ',
-        d2: '02 Nov — Orlando, FL — Feria del Libro',
-        d3: '07 Dic — Tampa, FL — Café Poético',
-        dates_cta: '¿Quieres organizar una lectura? Escríbeme: <a href="mailto:hola@ismachavez.com">hola@ismachavez.com</a>',
-        poetry_title: 'Poesía',
-        poetry_text: 'Escucha y lee piezas seleccionadas. Enlaza tus reels, Spotify/Apple Podcasts o videos de YouTube.',
-        store_title: 'Tienda',
-        store_text: 'Libros y prints. Enlaza a Amazon, Etsy o Shopify. Ejemplo: <a href="#">Lunas Rotas — Amazon</a>',
-        rights: 'Todos los derechos reservados.',
-        mailto_subject: 'Suscripción — Lista de correo',
-        mailto_body: 'Hola Isma, quiero unirme a tu lista. Mi correo es: ' ,
-        meta_desc: 'Sitio oficial de Isma Chavez: poesía, libros, fechas en vivo y tienda.'
-      },
-      en: {
-        nav_home: 'Home',
-        nav_dates: 'Live Dates',
-        nav_poetry: 'Poetry',
-        nav_store: 'Store',
-        signup_title: 'Join my mailing list',
-        btn_continue: 'Continue',
-        dates_title: 'Live Dates',
-        dates_intro: 'Upcoming readings and signings. (Add your dates here)',
-        dates_no: 'No live dates yet.',
-        dates_soon: 'Coming soon',
-        d1: 'Oct 12 — Miami, FL — Bookstore XYZ',
-        d2: 'Nov 02 — Orlando, FL — Book Fair',
-        d3: 'Dec 07 — Tampa, FL — Poetic Café',
-        dates_cta: 'Want to book a reading? Email me: <a href="mailto:hola@ismachavez.com">hola@ismachavez.com</a>',
-        poetry_title: 'Poetry',
-        poetry_text: 'Listen & read selected pieces. Link your reels, Spotify/Apple Podcasts, or YouTube videos.',
-        store_title: 'Store',
-        store_text: 'Books & prints. Link to Amazon, Etsy, or Shopify. Example: <a href="#">Broken Moons — Amazon</a>',
-        rights: 'All rights reserved.',
-        mailto_subject: 'Subscription — Mailing list',
-        mailto_body: 'Hi Isma, please add me to your list. My email is: ',
-        meta_desc: 'Official website of Isma Chavez: poetry, books, live dates, and store.'
-      }
-    };
+  // 2. DICCIONARIO DE TEXTOS
+  const dict = {
+    es: {
+      nav_home: 'Inicio',
+      nav_dates: 'Fechas',
+      nav_poetry: 'Poesía',
+      nav_store: 'Tienda',
+      signup_title: 'Únete a mi lista',
+      btn_continue: 'Continuar',
+      dates_title: 'Fechas',
+      dates_soon: 'Próximamente',
+      dates_cta: '¿Quieres organizar una lectura? Escríbeme: <a href="mailto:hola@ismachavez.com">hola@ismachavez.com</a>',
+      poetry_title: 'Poesía',
+      poetry_text: 'Escucha y lee piezas seleccionadas. Enlaza tus reels, Spotify/Apple Podcasts o videos de YouTube.',
+      store_title: 'Tienda',
+      store_text: 'Libros y prints. Enlaza a Amazon, Etsy o Shopify. Ejemplo: <a href="#">Lunas Rotas — Amazon</a>',
+      rights: 'Todos los derechos reservados.',
+      mailto_subject: 'Suscripción — Lista de correo',
+      mailto_body: 'Hola Isma, quiero unirme a tu lista. Mi correo es: ',
+      meta_desc: 'Sitio oficial de Isma Chavez: poesía, libros, fechas en vivo y tienda.'
+    },
+    en: {
+      nav_home: 'Home',
+      nav_dates: 'Live Dates',
+      nav_poetry: 'Poetry',
+      nav_store: 'Store',
+      signup_title: 'Join my mailing list',
+      btn_continue: 'Continue',
+      dates_title: 'Live Dates',
+      dates_soon: 'Coming soon',
+      dates_cta: 'Want to book a reading? Email me: <a href="mailto:hola@ismachavez.com">hola@ismachavez.com</a>',
+      poetry_title: 'Poetry',
+      poetry_text: 'Listen & read selected pieces. Link your reels, Spotify/Apple Podcasts, or YouTube videos.',
+      store_title: 'Store',
+      store_text: 'Books & prints. Link to Amazon, Etsy, or Shopify. Example: <a href="#">Broken Moons — Amazon</a>',
+      rights: 'All rights reserved.',
+      mailto_subject: 'Subscription — Mailing list',
+      mailto_body: 'Hi Isma, please add me to your list. My email is: ',
+      meta_desc: 'Official website of Isma Chavez: poetry, books, live dates, and store.'
+    }
+  };
 
-    // Aplicar traducciones
-    const t = (k) => (isEN ? dict.en[k] : dict.es[k]);
-    document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+  // 3. APLICAR TRADUCCIONES Y CONTENIDO DINÁMICO
+  const t = (k) => (isEN ? dict.en[k] : dict.es[k]);
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+  
+  document.getElementById('email').setAttribute('placeholder', 'Email');
+  document.getElementById('joinBtn').textContent = t('btn_continue');
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if(metaDesc) metaDesc.setAttribute('content', t('meta_desc'));
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Placeholder / botón / footer dinámicos
-    document.getElementById('email').setAttribute('placeholder', 'Email');
-    document.getElementById('joinBtn').textContent = t('btn_continue');
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if(metaDesc) metaDesc.setAttribute('content', t('meta_desc'));
+  // 4. OCULTAR SECCIÓN DE FECHAS (SI ES NECESARIO)
+  (function(){
+    const sec = document.getElementById('dates');
+    if(!sec) return;
+    const hasSoon = sec.querySelector('.soon');
+    if(!sec.querySelector('#dates-list') && !hasSoon){
+      sec.style.display = 'none';
+      document.querySelectorAll('a[href="#dates"]').forEach(a=>a.style.display='none');
+    }
+  })();
 
-    // Oculta la sección de fechas si no hay lista (para que no estorbe)
-    (function(){
-      const sec = document.getElementById('dates');
-      if(!sec) return;
-      const hasList = sec.querySelector('#dates-list');
-      const hasSoon = sec.querySelector('.soon');
-      if(!hasList && !hasSoon){
-        sec.style.display = 'none';
-        document.querySelectorAll('a[href="#dates"]').forEach(a=>a.style.display='none');
-      }
-    })();
+  // 5. AJUSTAR LINKS DE IDIOMA
+  const esLink = document.getElementById('lang-es');
+  const enLink = document.getElementById('lang-en');
+  if (isEN) {
+    esLink.href = '../';
+    enLink.href = '#';
+  } else {
+    esLink.href = '#';
+    enLink.href = 'en/';
+  }
 
-    // Año
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Links de idioma
-const esLink = document.getElementById('lang-es');
-const enLink = document.getElementById('lang-en');
-
-// Detecta si estamos en la página en inglés
-const isEN = location.pathname.includes('/en/');
-
-// Si estamos en la página en inglés (/en/)...
-if (isEN) {
-  // Para volver a español, debemos subir un nivel en la estructura de carpetas
-  esLink.href = '../'; 
-  enLink.href = '#'; 
-} else { 
-  // Para ir a inglés, entramos a la carpeta 'en' desde nuestra ubicación
-  esLink.href = '#'; 
-  enLink.href = 'en/'; 
-}
-
-    // Botón de mailing list (mailto con texto localizado)
-    document.getElementById('joinBtn').addEventListener('click', function(){
-      const v = document.getElementById('email').value.trim();
-      if(!v){ alert(isEN ? 'Enter your email' : 'Escribe tu email'); return; }
-      const subj = encodeURIComponent(t('mailto_subject'));
-      const body = encodeURIComponent(t('mailto_body') + v);
-      location.href = `mailto:hola@ismachavez.com?subject=${subj}&body=${body}`;
-    });
-  </script>
+  // 6. BOTÓN DE MAILING LIST
+  document.getElementById('joinBtn').addEventListener('click', function(){
+    const v = document.getElementById('email').value.trim();
+    if(!v){ alert(isEN ? 'Enter your email' : 'Escribe tu email'); return; }
+    const subj = encodeURIComponent(t('mailto_subject'));
+    const body = encodeURIComponent(t('mailto_body') + v);
+    location.href = `mailto:hola@ismachavez.com?subject=${subj}&body=${body}`;
+  });
+</script>
 </body>
 </html>
