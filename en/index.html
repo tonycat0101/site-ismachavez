@@ -380,8 +380,19 @@
 
     // Links de idioma
     const esLink = document.getElementById('lang-es');
-    const enLink = document.getElementById('lang-en');
-    if (isEN) { esLink.href = '/'; enLink.href = '#'; } else { esLink.href = '#'; enLink.href = '/en/'; }
+  const enLink = document.getElementById('lang-en');
+  const base = "/site-ismachavez/";  // 👈 importante: tu repo
+
+  // Detecta si estás en la versión EN
+  const isEN = window.location.pathname.includes("/en/");
+
+  if(isEN){ 
+    esLink.href = base + "index.html"; 
+    enLink.href = "#"; 
+  } else { 
+    esLink.href = "#"; 
+    enLink.href = base + "en/index.html"; 
+  }
 
     // Botón de mailing list (mailto con texto localizado)
     document.getElementById('joinBtn').addEventListener('click', function () {
