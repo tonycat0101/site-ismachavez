@@ -202,9 +202,16 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // Links de idioma
-    const esLink = document.getElementById('lang-es');
-    const enLink = document.getElementById('lang-en');
-    if(isEN){ esLink.href = '/'; enLink.href = '#'; } else { esLink.href = '#'; enLink.href = '/en/'; }
+const esLink = document.getElementById('lang-es');
+const enLink = document.getElementById('lang-en');
+// Si estamos en la página en inglés (/en/)...
+if(isEN){ 
+  esLink.href = '../'; // Sube un nivel para volver a la página principal
+  enLink.href = '#'; 
+} else { 
+  esLink.href = '#'; 
+  enLink.href = 'en/'; // Va a la carpeta 'en' desde la ubicación actual
+}
 
     // Botón de mailing list (mailto con texto localizado)
     document.getElementById('joinBtn').addEventListener('click', function(){
