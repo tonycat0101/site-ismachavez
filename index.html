@@ -204,13 +204,19 @@
     // Links de idioma
 const esLink = document.getElementById('lang-es');
 const enLink = document.getElementById('lang-en');
+
+// Detecta si estamos en la página en inglés
+const isEN = location.pathname.includes('/en/');
+
 // Si estamos en la página en inglés (/en/)...
-if(isEN){ 
-  esLink.href = '../'; // Sube un nivel para volver a la página principal
+if (isEN) {
+  // Para volver a español, debemos subir un nivel en la estructura de carpetas
+  esLink.href = '../'; 
   enLink.href = '#'; 
 } else { 
+  // Para ir a inglés, entramos a la carpeta 'en' desde nuestra ubicación
   esLink.href = '#'; 
-  enLink.href = 'en/'; // Va a la carpeta 'en' desde la ubicación actual
+  enLink.href = 'en/'; 
 }
 
     // Botón de mailing list (mailto con texto localizado)
