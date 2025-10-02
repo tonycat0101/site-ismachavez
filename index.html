@@ -9,9 +9,7 @@
   <link rel="alternate" hreflang="en" href="https://ismachavez.com/en/">
   <link rel="alternate" hreflang="x-default" href="https://ismachavez.com/">
   <style>
-    :root{
-      --max:1200px; --header-h:64px; --ink:#111; --bg:#fff;
-    }
+    :root{ --max:1200px; --header-h:64px; --ink:#111; --bg:#fff; }
     *{box-sizing:border-box}
     html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"}
     a{color:inherit;text-decoration:none}
@@ -27,19 +25,53 @@
     .icon{width:18px;height:18px;display:inline-block}
     .lang{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
 
-    /* HERO */
-    .hero{position:relative;height:calc(100vh - var(--header-h));min-height:520px;display:grid}
-    .hero::before{content:"";position:absolute;inset:0;background:url('/assets/hero.jpg') center/cover no-repeat;filter:contrast(1.02)}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(0,0,0,.15))}
-    .hero-inner{position:relative;display:grid;place-items:center;padding:24px}
+    /* HERO (nuevo) */
+    .hero{
+      position:relative; min-height:calc(100vh - var(--header-h));
+      display:grid; grid-template-columns:1fr min(560px, 48vw);
+      align-items:center; color:#fff; overflow:hidden;
+    }
+    .hero::before{
+      content:""; position:absolute; inset:0;
+      background:url("./assets/hero.jpg") no-repeat;
+      background-size:cover;
+      /* ajusta este valor si el recorte no te favorece en móvil */
+      background-position:left 45% center;
+      filter:contrast(1.05) saturate(1.05); transform:scale(1.02);
+    }
+    .hero::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(90deg,
+        rgba(0,0,0,.06) 0%,
+        rgba(0,0,0,.22) 50%,
+        rgba(0,0,0,.48) 72%,
+        rgba(0,0,0,.62) 100%);
+      pointer-events:none;
+    }
+    .hero-inner{
+      position:relative; z-index:1; margin-left:auto;
+      padding:clamp(20px,5vw,40px); max-width:min(92vw, var(--max));
+      text-align:left;
+    }
+    .kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;opacity:.92}
+    .hero-title{margin:.4rem 0 0;font-weight:800;font-size:clamp(36px,6vw,68px);line-height:1.02}
+    .hero-sub{margin:.9rem 0 1.2rem;max-width:38ch;opacity:.92;font-size:clamp(14px,2.6vw,18px);line-height:1.35}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn-ghost{
+      border:1px solid rgba(255,255,255,.55);color:#fff;text-decoration:none;
+      background:rgba(255,255,255,.10);padding:12px 18px;border-radius:12px;
+      font-weight:600;backdrop-filter:blur(2px)
+    }
+    .btn-ghost:hover{background:rgba(255,255,255,.18)}
 
-    /* SIGNUP BOX */
-    .signup{width:min(520px,92vw);background:rgba(0,0,0,.78);color:#f1f5f9;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:24px 20px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
-    .signup h3{margin:0 0 12px;font-size:14px;letter-spacing:.14em;text-transform:uppercase;text-align:center}
-    .field{display:flex;gap:10px;margin-top:10px}
-    .field input{flex:1;padding:12px 12px;border-radius:8px;border:1px solid #2b2b2b;background:#0f141a;color:#f8fafc}
-    .btn{padding:12px 16px;border-radius:8px;border:1px solid #2b2b2b;background:#1f2937;color:#e5e7eb;font-weight:600}
-    .btn:hover{filter:brightness(1.08)}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .hero::after{
+        background:linear-gradient(180deg,rgba(0,0,0,.15) 0%, rgba(0,0,0,.65) 100%)
+      }
+      .hero-inner{text-align:center;margin:0 auto}
+      .cta{justify-content:center}
+    }
 
     /* SECTIONS */
     main{max-width:var(--max);margin:40px auto;padding:0 18px}
@@ -79,14 +111,16 @@
     </div>
   </header>
 
+  <!-- HERO NUEVO -->
   <section id="home" class="hero" role="banner">
     <div class="hero-inner">
-      <div class="signup" role="form" aria-labelledby="signup-title">
-        <h3 id="signup-title" data-i18n="signup_title">Únete a mi lista</h3>
-        <div class="field">
-          <input id="email" type="email" placeholder="Email" autocomplete="email" required>
-          <button class="btn" id="joinBtn" data-i18n="btn_continue">Continuar</button>
-        </div>
+      <div class="kicker">I WANT POETRY</div>
+      <h1 class="hero-title">Isma&nbsp;Chavez</h1>
+      <p class="hero-sub">Poemas, canciones y spoken word. Fechas • videos • contacto.</p>
+      <div class="cta">
+        <a class="btn-ghost" href="#dates">Shows</a>
+        <a class="btn-ghost" href="#poetry">Videos</a>
+        <a class="btn-ghost" href="mailto:hola@ismachavez.com">Contacto</a>
       </div>
     </div>
   </section>
@@ -119,93 +153,60 @@
     © <span id="year"></span> Isma Chavez — <span data-i18n="rights">Todos los derechos reservados.</span>
   </footer>
 
- <script>
-  // 1. DETECTAR IDIOMA (SOLO UNA VEZ)
-  const isEN = location.pathname.includes('/en/');
-  document.documentElement.lang = isEN ? 'en' : 'es';
+  <script>
+    // 1) Idioma
+    const isEN = location.pathname.includes('/en/');
+    document.documentElement.lang = isEN ? 'en' : 'es';
 
-  // 2. DICCIONARIO DE TEXTOS
-  const dict = {
-    es: {
-      nav_home: 'Inicio',
-      nav_dates: 'Fechas',
-      nav_poetry: 'Poesía',
-      nav_store: 'Tienda',
-      signup_title: 'Únete a mi lista',
-      btn_continue: 'Continuar',
-      dates_title: 'Fechas',
-      dates_soon: 'Próximamente',
-      dates_cta: '¿Quieres organizar una lectura? Escríbeme: <a href="mailto:hola@ismachavez.com">hola@ismachavez.com</a>',
-      poetry_title: 'Poesía',
-      poetry_text: 'Escucha y lee piezas seleccionadas. Enlaza tus reels, Spotify/Apple Podcasts o videos de YouTube.',
-      store_title: 'Tienda',
-      store_text: 'Libros y prints. Enlaza a Amazon, Etsy o Shopify. Ejemplo: <a href="#">Lunas Rotas — Amazon</a>',
-      rights: 'Todos los derechos reservados.',
-      mailto_subject: 'Suscripción — Lista de correo',
-      mailto_body: 'Hola Isma, quiero unirme a tu lista. Mi correo es: ',
-      meta_desc: 'Sitio oficial de Isma Chavez: poesía, libros, fechas en vivo y tienda.'
-    },
-    en: {
-      nav_home: 'Home',
-      nav_dates: 'Live Dates',
-      nav_poetry: 'Poetry',
-      nav_store: 'Store',
-      signup_title: 'Join my mailing list',
-      btn_continue: 'Continue',
-      dates_title: 'Live Dates',
-      dates_soon: 'Coming soon',
-      dates_cta: 'Want to book a reading? Email me: <a href="mailto:hola@ismachavez.com">hola@ismachavez.com</a>',
-      poetry_title: 'Poetry',
-      poetry_text: 'Listen & read selected pieces. Link your reels, Spotify/Apple Podcasts, or YouTube videos.',
-      store_title: 'Store',
-      store_text: 'Books & prints. Link to Amazon, Etsy, or Shopify. Example: <a href="#">Broken Moons — Amazon</a>',
-      rights: 'All rights reserved.',
-      mailto_subject: 'Subscription — Mailing list',
-      mailto_body: 'Hi Isma, please add me to your list. My email is: ',
-      meta_desc: 'Official website of Isma Chavez: poetry, books, live dates, and store.'
-    }
-  };
+    // 2) Diccionario
+    const dict = {
+      es: {
+        nav_home: 'Inicio', nav_dates: 'Fechas', nav_poetry: 'Poesía', nav_store: 'Tienda',
+        dates_title: 'Fechas', dates_soon: 'Próximamente',
+        dates_cta: '¿Quieres organizar una lectura? Escríbeme: <a href="mailto:hola@ismachavez.com">hola@ismachavez.com</a>',
+        poetry_title: 'Poesía',
+        poetry_text: 'Escucha y lee piezas seleccionadas. Enlaza tus reels, Spotify/Apple Podcasts o videos de YouTube.',
+        store_title: 'Tienda',
+        store_text: 'Libros y prints. Enlaza a Amazon, Etsy o Shopify. Ejemplo: <a href="#">Lunas Rotas — Amazon</a>',
+        rights: 'Todos los derechos reservados.',
+        meta_desc: 'Sitio oficial de Isma Chavez: poesía, libros, fechas en vivo y tienda.'
+      },
+      en: {
+        nav_home: 'Home', nav_dates: 'Live Dates', nav_poetry: 'Poetry', nav_store: 'Store',
+        dates_title: 'Live Dates', dates_soon: 'Coming soon',
+        dates_cta: 'Want to book a reading? Email me: <a href="mailto:hola@ismachavez.com">hola@ismachavez.com</a>',
+        poetry_title: 'Poetry',
+        poetry_text: 'Listen & read selected pieces. Link your reels, Spotify/Apple Podcasts, or YouTube videos.',
+        store_title: 'Store',
+        store_text: 'Books & prints. Link to Amazon, Etsy, or Shopify. Example: <a href="#">Broken Moons — Amazon</a>',
+        rights: 'All rights reserved.',
+        meta_desc: 'Official website of Isma Chavez: poetry, books, live dates, and store.'
+      }
+    };
 
-  // 3. APLICAR TRADUCCIONES Y CONTENIDO DINÁMICO
-  const t = (k) => (isEN ? dict.en[k] : dict.es[k]);
-  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
-  
-  document.getElementById('email').setAttribute('placeholder', 'Email');
-  document.getElementById('joinBtn').textContent = t('btn_continue');
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if(metaDesc) metaDesc.setAttribute('content', t('meta_desc'));
-  document.getElementById('year').textContent = new Date().getFullYear();
+    // 3) Aplicar textos + meta + año
+    const t = (k) => (isEN ? dict.en[k] : dict.es[k]);
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if(metaDesc) metaDesc.setAttribute('content', t('meta_desc'));
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-  // 4. OCULTAR SECCIÓN DE FECHAS (SI ES NECESARIO)
-  (function(){
-    const sec = document.getElementById('dates');
-    if(!sec) return;
-    const hasSoon = sec.querySelector('.soon');
-    if(!sec.querySelector('#dates-list') && !hasSoon){
-      sec.style.display = 'none';
-      document.querySelectorAll('a[href="#dates"]').forEach(a=>a.style.display='none');
-    }
-  })();
+    // 4) Ocultar fechas si no hay contenido adicional
+    (function(){
+      const sec = document.getElementById('dates');
+      if(!sec) return;
+      const hasSoon = sec.querySelector('.soon');
+      if(!sec.querySelector('#dates-list') && !hasSoon){
+        sec.style.display = 'none';
+        document.querySelectorAll('a[href="#dates"]').forEach(a=>a.style.display='none');
+      }
+    })();
 
-  // 5. AJUSTAR LINKS DE IDIOMA
-  const esLink = document.getElementById('lang-es');
-  const enLink = document.getElementById('lang-en');
-  if (isEN) {
-    esLink.href = '../';
-    enLink.href = '#';
-  } else {
-    esLink.href = '#';
-    enLink.href = 'en/';
-  }
-
-  // 6. BOTÓN DE MAILING LIST
-  document.getElementById('joinBtn').addEventListener('click', function(){
-    const v = document.getElementById('email').value.trim();
-    if(!v){ alert(isEN ? 'Enter your email' : 'Escribe tu email'); return; }
-    const subj = encodeURIComponent(t('mailto_subject'));
-    const body = encodeURIComponent(t('mailto_body') + v);
-    location.href = `mailto:hola@ismachavez.com?subject=${subj}&body=${body}`;
-  });
-</script>
+    // 5) Links de idioma
+    const esLink = document.getElementById('lang-es');
+    const enLink = document.getElementById('lang-en');
+    if (isEN) { esLink.href = '../'; enLink.href = '#'; }
+    else { esLink.href = '#'; enLink.href = 'en/'; }
+  </script>
 </body>
 </html>
